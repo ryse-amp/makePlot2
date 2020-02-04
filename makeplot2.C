@@ -11,7 +11,15 @@ void makeplot2(){
    cout<<"1. Open root file"<<endl;
    TCanvas *c = new TCanvas("c","TProfile Histogram",1800,1000);
    cout<<"2. Set the canvas"<<endl;
-    
+      
+   auto legend = new TLegend(0.99,0.6,0.65,0.3);
+   legend->SetHeader("Legend","C");
+   auto legend1 = new TLegend(0.99,0.6,0.65,0.3);
+   legend1->SetHeader("Legend","C");
+   auto legend2 = new TLegend(0.99,0.6,0.65,0.3);
+   legend2->SetHeader("Legend","C");
+
+
 	std::vector<TString>Hist=
     {
       "tau25_idperf_tracktwoMVA",
@@ -26,7 +34,7 @@ void makeplot2(){
       
     };
    cout<<"2. Set the vector of string"<<endl;
-   c->Divide(1,3);
+   c->Divide(3,1);
    cout<<"3. Divide the canvas"<<endl;
    TProfile *h;
    cout<<"4. Set h pointer as TProfile histogram empty"<<endl;
@@ -34,11 +42,13 @@ void makeplot2(){
    cout<<"5. Set number n="<< n <<endl; 
    int p=1;
    cout<<"6. Set number p="<< p <<endl;
+
+
+
    for (int i=1; i<1+Hist.size() ; i++) {
-   cout<<"7. Enter inside the FOR structure with i="<< i <<endl;
-     h=(TProfile*)f->Get("run_1/HLT/TauMon/Expert/"+Hist[i-1]+"/TurnOnCurves/RecoEfficiency/TProfRecoL1PtEfficiency");
-
-
+   
+cout<<"7. Enter inside the FOR structure with i="<< i <<endl;
+      h=(TProfile*)f->Get("run_1/HLT/TauMon/Expert/"+Hist[i-1]+"/TurnOnCurves/RecoEfficiency/TProfRecoL1PtEfficiency");
       cout<<"8. Copy the TProfile histogram from the root file to the element"<< Hist [i-1] <<endl;
       n++;
       cout<<"9. raise the n="<< n <<endl;
@@ -46,13 +56,19 @@ void makeplot2(){
       h->SetLineColor(n+1);
       cout<<"10. Set the color with the number="<< n+1 <<endl;
       
-      
+  
+  
       if (n==1) {
          cout<<"11. Enter to if with i= "<< i <<endl;
          cout<<"and n="<< n << endl;
          c->cd(p);
          cout<<"13. Set the canvas in p="<< p <<endl;
-         h->Draw();
+         h->Draw(); 
+
+  
+         legend->AddEntry(h,Hist[p*i-1],"l");
+
+         
          cout<<"14. Draw the histogram"<<endl;
 	 gDirectory->cd("../../../");
          cout<<"15. Come back to the directory"<<endl;
@@ -63,6 +79,10 @@ void makeplot2(){
          p++;
          cout<<"18.raise p="<< p << endl;
          h->Draw("SAME");
+         legend->AddEntry(h,Hist[i-1],"l");
+         legend->Draw();
+         
+
          cout<<"19. Draw histogram"<<endl;
 	 gDirectory->cd("../../../");
          cout<<"20. Come back to the dorectory"<<endl;
@@ -70,7 +90,8 @@ void makeplot2(){
          cout<<"21. Erase the statics box"<<endl;
       } else {
          cout<<"22. Enter to else structure with i="<< i <<endl;
-         h->Draw("SAME");
+         h->Draw("SAME");  
+         legend->AddEntry(h,Hist[i-1],"l");
          cout<<"23. Draw the histogram"<<endl;
 	 gDirectory->cd("../../../");
          cout<<"24. Come back to the dorectory"<<endl;
